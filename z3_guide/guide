@@ -1,0 +1,30 @@
+Difference between Z3 and python objects
+ is_ast(a)
+ is_true (Z3_true = (x==x))
+ is_false
+ as_long
+Z3 functions and python functions
+
+Z3 arrays and python arrays
+  select, store
+
+
+basics
+  booleans: And, Or, Implies, Not (can apply to lists or arbitrary args)
+  arithmetic: +, -, reals, sqrt
+
+
+getting around the lack of recursion in Z3 by using a python function to build a constraint (occurences)
+some functions still apply (sum)
+creating variables arrays, vars for quantifiers
+
+useful functions
+  sum (a python function, but works because f override)
+  Distinct
+  ForAll, Exists
+  div (/)
+  mod (%)
+
+models
+  indexing
+  eval
