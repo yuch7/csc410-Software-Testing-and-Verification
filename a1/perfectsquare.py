@@ -14,6 +14,7 @@ x = int(sys.argv[1])
 
 ##################  Your Code Here  #####################
 
+y = Int('y')
 
 
 #########################################################
@@ -23,7 +24,7 @@ x = int(sys.argv[1])
 ##################  Your Code Here  #####################
 
 # The final formula going in. Change this to your actual formula
-F = simplify(Bool('p')==Bool('p'))
+F = (y>=0, y*y == x)
 
 #########################################################
 #         Call the solver and print the answer          #
@@ -40,7 +41,7 @@ if isSAT == sat:
    m = solver.model()
 
    ##############  Complete the Output  #################
-   print "SAT the square root is"
+   print "SAT the square root is %s" % str(m[y])
 else:
    print "UNSAT"
 
