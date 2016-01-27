@@ -11,20 +11,29 @@ if len(sys.argv) != 3:
 ######################################################### 
 
 ##################  Your Code Here  #####################
+sum_in = int(sys.argv[2])
+dimension_in = int(sys.argv[1])
+array_h = [[Int('x%sy%s' % (j, i)) for i in range(dimension_in)] for j in range(dimension_in)]
+array_v = [[array_h[i][j] for i in range(dimension_in)] for j in range(dimension_in)]
+diagonal_l = [array_h[i][i] for i in range(dimension_in)]
+diagonal_r = [array_h[dimension_in - i - 1][i] for i in range(dimension_in)]
 
 #########################################################
 #        The actual constraints for the problem         #
 #########################################################
 
 ##################  Your Code Here  #####################
-
+horizontal_c = [sum(array_h[i]) == sum_in for i in range(dimension_in)]
+vertical_c = [sum(array_v[i]) == sum_in for i in range(dimension_in)]
+diagonal_lc = [sum(diagonal_l) == sum_in]
+diagonal_rc = [sum(diagonal_r) == sum_in]
 
 #########################################################
 #         Call the solver and print the answer          #
 #########################################################
 
 # The final formula going in. Change this to your actual formula
-F = simplify(Bool('p')==Bool('p'))
+F = horizontal_c + vertical_c + diagonal_rc + diagonal_lc
 
 # a Z3 solver instance
 solver = Solver()
@@ -37,7 +46,7 @@ if isSAT == sat:
    m = solver.model()
   
    ##############  Complete the Output  #################
-   print 
+   print "SAT %s" % m
 else:
    print "UNSAT"
 
