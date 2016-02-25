@@ -57,9 +57,9 @@ isSAT = solver.check()
 # print the result
 if isSAT == sat:   
    m = solver.model()
-
    ##############  Complete the Output  #################
-   print "%s" % m
+   ret = [[i, m.eval(board[i])] for i in range(n)]
+   print "%s" % ret
 else:
    print "no solution possible"
 
