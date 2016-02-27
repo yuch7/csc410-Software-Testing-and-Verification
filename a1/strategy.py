@@ -78,14 +78,15 @@ if isSAT == sat:
   m = solver.model()   
    
    ##############  Complete the Output  #################
-  aStrategy = "High" if is_true(m.eval(aHigh)) else \
-    "Med" if is_true(m.eval(aMed)) else \
-    "Low" if is_true(m.eval(aLow)) else "No dominant strategy"
-  bStrategy = "High" if is_true(m.eval(bHigh)) else \
-    "Med" if is_true(m.eval(bMed)) else \
-    "Low" if is_true(m.eval(bLow)) else "No dominant strategy"
-  print "Player A: The dominant strategy is %s" % aStrategy 
-  print "Player B: The dominant strategy is %s" % bStrategy
+
+  aStrategy = "The dominant strategy is high" if is_true(m.eval(aHigh)) else \
+    "The dominant strategy is medium" if is_true(m.eval(aMed)) else \
+    "The dominant strategy is low" if is_true(m.eval(aLow)) else "No dominant Strategy"
+  bStrategy = "The dominant strategy is high" if is_true(m.eval(bHigh)) else \
+    "The dominant strategy is medium" if is_true(m.eval(bMed)) else \
+    "The dominant strategy is low" if is_true(m.eval(bLow)) else "No dominant Strategy"
+  print "Player A: %s" % aStrategy 
+  print "Player B: %s" % bStrategy
 else:
   print "no solution possible"
 
