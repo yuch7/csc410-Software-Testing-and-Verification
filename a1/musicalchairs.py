@@ -15,7 +15,7 @@ _in = open(sys.argv[1], "r")
 
 n = int(_in.readline())
 S = int(_in.readline())
-sub_set = map(int, _in.readline().strip().strip('[').strip(']').split(','))
+sub_set = eval(_in.readline())
 board = [Int("%s" % i) for i in range(n)]
 
 ##################  Your Code Here  #####################
@@ -26,15 +26,23 @@ board = [Int("%s" % i) for i in range(n)]
 
 ##################  Your Code Here  #####################
 
-must_move = []
+must_move = []	
+for i in sub_set:
+	must_move.append((board[i] != i))
+	if ((i + S) >= n):
+		tmp1 = Or((board[i] <= (i + S - n)), board[i] > i)
+	else:
+		tmp1 = (board[i] <= (i + S))
+	if ((i - S) < 0):
+		tmp2 = Or((board[i] >= (n - i - S)), board[i] < i)
+	else:
+		tmp2 = (board[i] >= i - S)
+	must_move.append(Or(tmp1, tmp2))
+
+cant_move = []
 for i in range(n):
-	if i in sub_set:
-		if ((board[i] + S) >= n):
-			must_move.append((board[i] >= 0))
-			must_move.append((board[i] < i))
-	for j in range(n):
-		if i != j:
-			must_move.append((board[i] != board[j]))
+	if i not in sub_set:
+		cant_move.append((board[i] == i))
 
 distinct = [Distinct(board)]
 
@@ -46,7 +54,7 @@ not_neg = [(i >= 0) for i in board]
 #########################################################
 
 # The final formula going in. Change this to your actual formula
-F = must_move + distinct + in_seats + not_neg
+F = must_move + distinct + in_seats + not_neg + cant_move
 
 # a Z3 solver instance
 solver = Solver()
