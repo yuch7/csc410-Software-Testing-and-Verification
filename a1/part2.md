@@ -3,21 +3,21 @@
   <li>Design Tests
     <ol type="i">
       <li>It is not possible to have path coverage at all since there are impossible paths, however if we omit those, we can use these inputs to get to all reachable paths without condition coverage
-      <ol>
+      <ol type="1">
         <li>(x = -1, y = 0, z = 0)</li>
         <li>(x = -1, y = 2, z = 0)</li>
         <li>(x = 1, y = 2, z = 0)</li>
       </ol>
       </li>
       <li>Again coverage is incomplete since one of them is impossible to satisfy based on previous conditions, and since z is unchanged condition coverage is not met.
-        <ol>
+        <ol type="1">
           <li>(x = -1, y = 0, z = 0)</li>
           <li>(x = -1, y = 2, z = 0)</li>
           <li>(x = 1, y = 2, z = 0)</li>
         </ol>
       </li>
       <li>Covering the conditions carefully we can avoid all the paths
-        <ol>
+        <ol type="1">
           <li>(x = 1, y = 0, z = 0)</li>
           <li>(x = 1, y = 2, z = -1)</li>
           <li>(x = -1, y = 2, z = 0)</li>
