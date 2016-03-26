@@ -1,0 +1,40 @@
+// http://rise4fun.com/Dafny/Gdn6
+// return the index of an integer -- key in an integer array -- a
+// if key is not found then return  -1
+
+method Find(a: array<int>, key: int) returns (index: int)
+requires a != null
+ensures 0 <= index ==> index < a.Length && a[index] == key
+ensures index < 0 ==> forall k :: 0 <= k < a.Length ==> a[k] != key
+{
+  if (a.Length == 0)
+  { 
+    return -1;
+  }
+    
+  index := FindHelper(a, key, 0);
+  return index;
+}
+ 
+// a recursive impelementation of find
+method FindHelper(a: array<int>, key: int, i: int) returns (index: int) 
+requires a != null
+requires i >= 0 && i < a.Length
+requires forall k :: 0 <= k < i ==> a[k] != key
+decreases a.Length - 1 - i
+ensures 0 <= index ==> index < a.Length && a[index] == key
+ensures index < 0 ==> forall k :: 0 <= k < a.Length ==> a[k] != key
+{
+   if (a[i] == key)
+   {
+     return i;
+   }
+   assert a[i] != key;
+   if (i == a.Length - 1)
+   {
+     return -1;
+   }
+
+   index := FindHelper(a, key, i+1);
+   return index;
+}
