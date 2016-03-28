@@ -89,31 +89,32 @@ main = """MODULE main
 VAR
   cube : array 0..5 of array 0..2 of array 0..2;
   face : 0..5
+  done : boolean
 ASSIGN
 """
 
 # the initialization of variables to the instance
-init = ""
+init = "\tdone := FALSE;\n"
 for i in range(6):
   for j in range(3):
     for k in range(3):
       init += "\tinit(cube[{0}][{1}][{2}]) := {3};\n".format(i,j,k,cube[i][j][k])
 
-
+3
 next = ""
 for i in range(6):
   for j in range(3):
     for k in range(3):
       next += """
-  next(cube[i][j][k]) := case
-                        face = 0 : 
-                        face = 1 :
-                        face = 2 :
-                        face = 3 :
-                        face = 4 :
-                        face = 5 :
+  next(cube[{0}][{1}][{2}]) := case
+                        face = 0 : {3} 
+                        face = 1 : {4}
+                        face = 2 : {5}
+                        face = 3 : {6}
+                        face = 4 : {7}
+                        face = 5 : {8}
                       esac;
-"""
+""".format(i,j,k,)
 
 spec = "" #TODO
 

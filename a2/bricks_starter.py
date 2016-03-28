@@ -32,7 +32,10 @@ init = """
 
 #TODO transitions
 next = """
-	next(turn) := !turn;
+	next(turn) := case
+					bricks > 0: !turn;
+					TRUE	: turn;
+				esac;
 	next(bricks) := case
 						bricks >= 3	: bricks - i;
 						bricks = 2	: {0 , 1};
@@ -52,7 +55,7 @@ next = """
 spec = """
 SPEC AF (winner = a | winner = b);
 SPEC AF ((AG winner = a) | (AG winner = b));
-SPEC AG (turn = FALSE -> (EF (winner = a)))
+SPEC AG (turn = FALSE -> EF winner = a)
 """
 
 # put it all together
