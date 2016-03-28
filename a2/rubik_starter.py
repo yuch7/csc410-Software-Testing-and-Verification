@@ -1,5 +1,5 @@
 import sys
-
+from copy import deepcopy
 # This code is meant to read in a list of moves for a rubik's cube and generate NuSMV code that solves the cube. 
 
 # To minimize the number of moves, only a surface panel can be turned, and only right.
@@ -32,14 +32,13 @@ _in = open(sys.argv[1], "r")
 moves = eval(_in.readline())
 
 #the rubik's cube in its initial solved state. 
-cube = [[[ k for i in range(n)] for j in range(n)] for k in range(6)]
+cube = [[[ k for i in range(3)] for j in range(3)] for k in range(6)]
 
 #The relationship of the panels to each-other is encoded in this dictionary
 surface = {0:{"top":4,"bottom":5,"left":3,"right":1},
            1:{"top":4,"bottom":5,"left":0,"right":2},
            2:{"top":4,"bottom":5,"left":1,"right":3},
            3:{"top":4,"bottom":5,"left":2,"right":0},
-
            4:{"top":3,"bottom":1,"left":0,"right":2},
            5:{"top":1,"bottom":3,"left":0,"right":2},
 }
@@ -47,11 +46,39 @@ surface = {0:{"top":4,"bottom":5,"left":3,"right":1},
 
 # rotate a face (0..5) of the rubik's cube
 def rotate(face):
-   #TODO
+  tmp = deepcopy(cube[face])     
+  cube[face][0][0] = tmp[2][0]
+  cube[face][0][1] = tmp[1][0]
+  cube[face][0][2] = tmp[0][0]
+  cube[face][1][0] = tmp[2][1]
+  cube[face][1][2] = tmp[0][1]
+  cube[face][2][0] = tmp[2][2]
+  cube[face][2][1] = tmp[1][2]
+  cube[face][2][2] = tmp[0][2]
+  tmptop = deepcopy(cube[surface[face]['top']][2])
+  tmpbot = deepcopy(cube[surface[face]['bottom']][0])
+  tmpleft = [cube[surface[face]['left']][i][2] for i in range(3)]
+  tmpright = [cube[surface[face]['right']][i][0] for i in range(3)]
+  tmpleft.reverse()
+  tmpright.reverse()
+  cube[surface[face]['top']][2] = tmpleft
+  cube[surface[face]['bottom']][0] = tmpright
+  cube[surface[face]['left']][0][2] = tmpbot[0]
+  cube[surface[face]['left']][1][2] = tmpbot[1]
+  cube[surface[face]['left']][2][2] = tmpbot[2]
+  cube[surface[face]['right']][0][0] = tmptop[0]
+  cube[surface[face]['right']][1][0] = tmptop[1]
+  cube[surface[face]['right']][2][0] = tmptop[2]
+ 
+ 
+def pcube():
+  for x in cube:
+    for y in x:
+      print y
 
 #play a series of moves
 def play(move_list):
-   if move_list != []:
+  if move_list != []:
       rotate(move_list[0])
       play(move_list[1:])
 
@@ -69,8 +96,10 @@ main = "" #TODO
 # the initialization of variables to the instance
 init = "" #TODO
 
+next = ""
+
 spec = "" #TODO
 
 # put it all together
-print reduce(linebreak, [main,init,tiles,spec])
+print reduce(linebreak, [main,init,next,spec])
 
