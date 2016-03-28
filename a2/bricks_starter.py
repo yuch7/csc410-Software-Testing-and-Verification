@@ -34,7 +34,7 @@ init = """
 next = """
 	next(turn) := !turn;
 	next(bricks) := case
-						bricks > 3	: bricks - i;
+						bricks >= 3	: bricks - i;
 						bricks = 2	: {0 , 1};
 						bricks = 1	: 0;
 						TRUE	: 0;
@@ -42,7 +42,7 @@ next = """
 
 	next(winner) := case
 						bricks > 0	: none;
-						bricks = 0	: turn ? a : b;
+						bricks = 0	: winner = none ? (turn ? a : b) : winner;
 						TRUE	: winner;
 					esac;
 """
@@ -50,10 +50,9 @@ next = """
 
 #TODO the specifications 
 spec = """
-SPEC AF (winner = a & bricks = 0);
-SPEC AF (AG winner = a) | (AG winner = b);
-SPEC AG bricks >= 0;
-SPEC AG (AF winner = a);
+SPEC AF (winner = a | winner = b);
+SPEC AF ((AG winner = a) | (AG winner = b));
+SPEC AG (turn = FALSE -> (EF (winner = a)))
 """
 
 # put it all together

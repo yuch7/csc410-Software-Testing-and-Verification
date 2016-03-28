@@ -69,7 +69,7 @@ def rotate(face):
   cube[surface[face]['right']][0][0] = tmptop[0]
   cube[surface[face]['right']][1][0] = tmptop[1]
   cube[surface[face]['right']][2][0] = tmptop[2]
-  
+
 #play a series of moves
 def play(move_list):
   if move_list != []:
@@ -85,12 +85,35 @@ linebreak = lambda a,b: a+"\n"+b
 instance = cube
 
 # module declaration and variable declaration
-main = "" #TODO
+main = """MODULE main
+VAR
+  cube : array 0..5 of array 0..2 of array 0..2;
+  face : 0..5
+ASSIGN
+"""
 
 # the initialization of variables to the instance
-init = "" #TODO
+init = ""
+for i in range(6):
+  for j in range(3):
+    for k in range(3):
+      init += "\tinit(cube[{0}][{1}][{2}]) := {3};\n".format(i,j,k,cube[i][j][k])
+
 
 next = ""
+for i in range(6):
+  for j in range(3):
+    for k in range(3):
+      next += """
+  next(cube[i][j][k]) := case
+                        face = 0 : 
+                        face = 1 :
+                        face = 2 :
+                        face = 3 :
+                        face = 4 :
+                        face = 5 :
+                      esac;
+"""
 
 spec = "" #TODO
 
