@@ -69,13 +69,7 @@ def rotate(face):
   cube[surface[face]['right']][0][0] = tmptop[0]
   cube[surface[face]['right']][1][0] = tmptop[1]
   cube[surface[face]['right']][2][0] = tmptop[2]
- 
- 
-def pcube():
-  for x in cube:
-    for y in x:
-      print y
-
+  
 #play a series of moves
 def play(move_list):
   if move_list != []:
