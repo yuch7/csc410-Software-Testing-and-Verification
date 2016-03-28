@@ -107,12 +107,13 @@ for i in range(6):
     for k in range(3):
       next += """
   next(cube[{0}][{1}][{2}]) := case
-                        face = 0 : {3} 
-                        face = 1 : {4}
-                        face = 2 : {5}
-                        face = 3 : {6}
-                        face = 4 : {7}
-                        face = 5 : {8}
+                        done = TRUE : cube [{0}][{1}][{2}];
+                        face = 0 : {3};
+                        face = 1 : {4};
+                        face = 2 : {5};
+                        face = 3 : {6};
+                        face = 4 : {7};
+                        face = 5 : {8};
                       esac;
 """.format(i,j,k,)
 
