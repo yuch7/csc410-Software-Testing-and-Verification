@@ -55,7 +55,7 @@ next = """
 spec = """
 SPEC AF (winner = a | winner = b);
 SPEC AF ((AG winner = a) | (AG winner = b));
-SPEC AG (turn = FALSE -> EF winner = a)
+SPEC EF (turn = FALSE -> AF winner = a)
 """
 
 # put it all together
