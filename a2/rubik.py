@@ -33,6 +33,9 @@ moves = eval(_in.readline())
 
 #the rubik's cube in its initial solved state. 
 cube = [[[ k for i in range(3)] for j in range(3)] for k in range(6)]
+fcube = deepcopy(cube)
+
+scube = [[[ "cube[{0}][{1}][{2}]".format(k,j,i) for i in range(3)] for j in range(3)] for k in range(6)]
 
 #The relationship of the panels to each-other is encoded in this dictionary
 surface = {0:{"top":4,"bottom":5,"left":3,"right":1},
@@ -45,30 +48,30 @@ surface = {0:{"top":4,"bottom":5,"left":3,"right":1},
 
 
 # rotate a face (0..5) of the rubik's cube
-def rotate(face):
-  tmp = deepcopy(cube[face])     
-  cube[face][0][0] = tmp[2][0]
-  cube[face][0][1] = tmp[1][0]
-  cube[face][0][2] = tmp[0][0]
-  cube[face][1][0] = tmp[2][1]
-  cube[face][1][2] = tmp[0][1]
-  cube[face][2][0] = tmp[2][2]
-  cube[face][2][1] = tmp[1][2]
-  cube[face][2][2] = tmp[0][2]
-  tmptop = deepcopy(cube[surface[face]['top']][2])
-  tmpbot = deepcopy(cube[surface[face]['bottom']][0])
-  tmpleft = [cube[surface[face]['left']][i][2] for i in range(3)]
-  tmpright = [cube[surface[face]['right']][i][0] for i in range(3)]
+def rotate(face, ncube=cube):
+  tmp = deepcopy(ncube[face])     
+  ncube[face][0][0] = tmp[2][0]
+  ncube[face][0][1] = tmp[1][0]
+  ncube[face][0][2] = tmp[0][0]
+  ncube[face][1][0] = tmp[2][1]
+  ncube[face][1][2] = tmp[0][1]
+  ncube[face][2][0] = tmp[2][2]
+  ncube[face][2][1] = tmp[1][2]
+  ncube[face][2][2] = tmp[0][2]
+  tmptop = deepcopy(ncube[surface[face]['top']][2])
+  tmpbot = deepcopy(ncube[surface[face]['bottom']][0])
+  tmpleft = [ncube[surface[face]['left']][i][2] for i in range(3)]
+  tmpright = [ncube[surface[face]['right']][i][0] for i in range(3)]
   tmpleft.reverse()
   tmpright.reverse()
-  cube[surface[face]['top']][2] = tmpleft
-  cube[surface[face]['bottom']][0] = tmpright
-  cube[surface[face]['left']][0][2] = tmpbot[0]
-  cube[surface[face]['left']][1][2] = tmpbot[1]
-  cube[surface[face]['left']][2][2] = tmpbot[2]
-  cube[surface[face]['right']][0][0] = tmptop[0]
-  cube[surface[face]['right']][1][0] = tmptop[1]
-  cube[surface[face]['right']][2][0] = tmptop[2]
+  ncube[surface[face]['top']][2] = tmpleft
+  ncube[surface[face]['bottom']][0] = tmpright
+  ncube[surface[face]['left']][0][2] = tmpbot[0]
+  ncube[surface[face]['left']][1][2] = tmpbot[1]
+  ncube[surface[face]['left']][2][2] = tmpbot[2]
+  ncube[surface[face]['right']][0][0] = tmptop[0]
+  ncube[surface[face]['right']][1][0] = tmptop[1]
+  ncube[surface[face]['right']][2][0] = tmptop[2]
 
 #play a series of moves
 def play(move_list):
@@ -87,24 +90,46 @@ instance = cube
 # module declaration and variable declaration
 main = """MODULE main
 VAR
-  cube : array 0..5 of array 0..2 of array 0..2;
-  face : 0..5
-  done : boolean
-ASSIGN
+  cube : array 0..5 of array 0..2 of array 0..2 of 0..5;
+  face : 0..5;
+  done : boolean;
 """
 
 # the initialization of variables to the instance
-init = "\tdone := FALSE;\n"
+init = "DEFINE\n\tfcube := {0};\nASSIGN\n".format(cube)
+init += "\tinit(done) := FALSE;\n"
 for i in range(6):
   for j in range(3):
     for k in range(3):
       init += "\tinit(cube[{0}][{1}][{2}]) := {3};\n".format(i,j,k,cube[i][j][k])
 
-3
-next = ""
+tmp0 = deepcopy(scube)
+rotate(0, tmp0)
+tmp1 = deepcopy(scube)
+rotate(1, tmp1)
+tmp2 = deepcopy(scube)
+rotate(2, tmp2)
+tmp3 = deepcopy(scube)
+rotate(3, tmp3)
+tmp4 = deepcopy(scube)
+rotate(4, tmp4)
+tmp5 = deepcopy(scube)
+rotate(5, tmp5)
+next = """
+  next(done) := case
+                  cube = fcube : TRUE;
+                  TRUE : FALSE;
+                esac;
+              """.format(fcube)
 for i in range(6):
   for j in range(3):
     for k in range(3):
+      l = tmp0[i][j][k]
+      m = tmp1[i][j][k]
+      n = tmp2[i][j][k]
+      o = tmp3[i][j][k]
+      p = tmp4[i][j][k]
+      q = tmp5[i][j][k]
       next += """
   next(cube[{0}][{1}][{2}]) := case
                         done = TRUE : cube [{0}][{1}][{2}];
@@ -115,7 +140,7 @@ for i in range(6):
                         face = 4 : {7};
                         face = 5 : {8};
                       esac;
-""".format(i,j,k,)
+""".format(i,j,k,l,m,n,o,p,q)
 
 spec = "" #TODO
 
