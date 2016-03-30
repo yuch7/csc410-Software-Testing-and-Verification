@@ -96,7 +96,7 @@ VAR
 """
 
 # the initialization of variables to the instance
-init = "DEFINE\n\tfcube := {0};\nASSIGN\n".format(cube)
+init = "DEFINE\n\tfcube := {0};\nASSIGN\n".format(fcube)
 init += "\tinit(done) := FALSE;\n"
 for i in range(6):
   for j in range(3):
